@@ -64,7 +64,6 @@ void setup()
     // EEPROM_WriteByte(EEPROM_VICTORY_ADDR, 0);
     // EEPROM_WriteByte(EEPROM_FAILURE_ADDR, 0);
 
-    // Read saved 8-bit counters from EEPROM.
     victoryCount = EEPROM_ReadByte(EEPROM_VICTORY_ADDR);
     failureCount = EEPROM_ReadByte(EEPROM_FAILURE_ADDR);
 
@@ -90,8 +89,94 @@ void setup()
     startGame();
 }
 
+
 void loop()
 {
-   
-   // Main game logic will be added here.
+// Process a new LCG value
+if (newValue) {
+    noInterrupts();
+
+    uint32_t value = lcgValue;
+    uint32_t index = lcgIndex - 1;
+    uint8_t direction = currentDirection;
+
+    newValue = false;
+
+    interrupts();
+
+    showDirection(direction);
+
+    Serial.print("Direction: ");
+
+    switch (direction) {
+        case 0:
+            Serial.println("UP");
+            break;
+
+        case 1:
+            Serial.println("LEFT");
+            break;
+
+        case 2:
+            Serial.println("RIGHT");
+            break;
+
+        case 3:
+            Serial.println("DOWN");
+            break;
+    }
+
+    Serial.print("n = ");
+    Serial.print(index);
+
+    Serial.print("  X = ");
+    Serial.print(value);
+
+    Serial.print("  HEX = 0x");
+
+    if (value < 16) {
+        Serial.print("0");
+    }
+
+    Serial.print(value, HEX);
+
+    Serial.print("  X mod 4 = ");
+    Serial.println(value % 4);
 }
+
+    // Read only the first joystick movement
+if (gameActive && !movementDetected) {
+    uint8_t movement = Joystick_Read();
+
+    if (movement != 255) {
+        movementDetected = true;
+
+        // Immediately switch off the LED
+        turnOffLeds();
+
+        if (movement == currentDirection) {
+            num_correct++;
+            Serial.println("Correct!");
+        }
+        else {
+            num_wrong++;
+            Serial.println("Wrong!");
+        }
+
+        Serial.print("Correct = ");
+        Serial.print(num_correct);
+
+        Serial.print("  Wrong = ");
+        Serial.println(num_wrong);
+
+        // If this was the 10th element, finish immediately
+        if (lcgIndex == 10) {
+            gameActive = false;
+            gameFinished = true;
+            stopTimer1();
+        }
+     }
+  }
+
+}
+
