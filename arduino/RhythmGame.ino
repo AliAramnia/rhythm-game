@@ -43,9 +43,51 @@ void startGame(void)
 
 void setup()
 {
+    SPI_Init();
 
+    pinMode(LED0, OUTPUT);
+    pinMode(LED1, OUTPUT);
+    pinMode(LED2, OUTPUT);
+    pinMode(LED3, OUTPUT);
 
-   // Hardware initialization will be added here.
+    Joystick_Init();
+
+    turnOffLeds();
+
+    Serial.begin(115200);
+
+    // A0 is used as an entropy source.
+    pinMode(A0, INPUT);
+
+    DAC_Init();
+
+    // EEPROM_WriteByte(EEPROM_VICTORY_ADDR, 0);
+    // EEPROM_WriteByte(EEPROM_FAILURE_ADDR, 0);
+
+    // Read saved 8-bit counters from EEPROM.
+    victoryCount = EEPROM_ReadByte(EEPROM_VICTORY_ADDR);
+    failureCount = EEPROM_ReadByte(EEPROM_FAILURE_ADDR);
+
+    Serial.println();
+    Serial.println("================================");
+    Serial.println("       SAVED GAME RESULTS");
+    Serial.println("================================");
+
+    Serial.print("Victories = ");
+    Serial.println(victoryCount);
+
+    SEND_FPGA(victoryCount);
+
+    delay(1000);
+
+    Serial.print("Failures  = ");
+    Serial.println(failureCount);
+
+    SEND_FPGA(failureCount);
+
+    Serial.println("================================");
+
+    startGame();
 }
 
 void loop()
