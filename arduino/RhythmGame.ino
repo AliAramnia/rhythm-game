@@ -1,5 +1,6 @@
 // Rhythm Game - Arduino Mega
 // Main application file.
+#include "pins.h"
 #include "eeprom_manager.h"
 #include "lcg.h"
 #include "adc.h"
@@ -9,6 +10,7 @@
 #include "leds.h"
 #include "joystick.h"
 #include "game_state.h"
+
 
 
 // Start a new 10-attempt game round.
