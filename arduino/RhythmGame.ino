@@ -177,6 +177,73 @@ if (gameActive && !movementDetected) {
         }
      }
   }
+// Game finished
+if (gameFinished) {
+    noInterrupts();
+
+    uint8_t correct = num_correct;
+    uint8_t wrong = num_wrong;
+
+    gameFinished = false;
+
+    interrupts();
+
+    Serial.println();
+    Serial.println("========== GAME OVER ==========");
+
+    Serial.print("Correct: ");
+    Serial.println(correct);
+
+    Serial.print("Wrong: ");
+    Serial.println(wrong);
+
+    if (correct > wrong) {
+        Serial.println("YOU WIN!");
+
+        turnOnAllLeds();
+
+        // Play victory sound
+        VictorySound();
+
+        // Update 8-bit victory counter
+        victoryCount++;
+
+        // Save 8-bit victory counter to EEPROM
+        EEPROM_WriteByte(EEPROM_VICTORY_ADDR, victoryCount);
+
+        Serial.print("Victories = ");
+        Serial.println(victoryCount);
+
+        Serial.print("Failures  = ");
+        Serial.println(failureCount);
+    }
+    else {
+        Serial.println("YOU LOSE!");
+
+        turnOffLeds();
+
+        // Play failure sound
+        FailureSound();
+
+        // Update 8-bit failure counter
+        failureCount++;
+
+        // Save 8-bit failure counter to EEPROM
+        EEPROM_WriteByte(EEPROM_FAILURE_ADDR, failureCount);
+
+        Serial.print("Victories = ");
+        Serial.println(victoryCount);
+
+        Serial.print("Failures  = ");
+        Serial.println(failureCount);
+    }
+
+    Serial.println("===============================");
+
+    delay(3000);
+
+    startGame();
+}
 
 }
 
