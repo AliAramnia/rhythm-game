@@ -5,6 +5,7 @@
 #include "spi_manager.h"
 #include "timer1.h"
 #include "leds.h"
+#include "joystick.h"
 // Rhythm Game - Arduino Mega
 // Main application file.
 
