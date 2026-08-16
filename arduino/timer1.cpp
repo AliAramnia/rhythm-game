@@ -2,6 +2,8 @@
 #include <avr/interrupt.h>
 
 #include "timer1.h"
+#include "game_state.h"
+#include "lcg.h"
 
 // Configure Timer1 in CTC mode with a 3-second interrupt period.
 void setupTimer1(void)
@@ -31,4 +33,26 @@ void setupTimer1(void)
 void stopTimer1(void)
 {
     TIMSK1 &= ~(1 << OCIE1A);
+}
+ISR(TIMER1_COMPA_vect)
+{
+    if (lcgIndex < 10) {
+        lcgValue = nextElementLCG(lcgValue, 131, 7, lcgIndex, 255);
+
+        currentDirection = lcgValue % 4;
+        movementDetected = false;
+
+        newValue = true;
+
+        lcgIndex++;
+
+        if (lcgIndex == 10) {
+            gameActive = true;
+        }
+    }
+    else {
+        gameActive = false;
+        gameFinished = true;
+        TIMSK1 &= ~(1 << OCIE1A);
+    }
 }
