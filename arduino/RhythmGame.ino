@@ -1,6 +1,7 @@
 #include "eeprom_manager.h"
 #include "lcg.h"
 #include "adc.h"
+#include "dac.h"
 // Rhythm Game - Arduino Mega
 // Main application file.
 
