@@ -15,7 +15,7 @@ void SPI_Init(void)
 }
 
 // Send one byte to the FPGA.
-void SPI_SendByte(uint8_t data)
+void SEND_FPGA(uint8_t data)
 {
     digitalWrite(FPGA_CS, LOW);
     SPI.transfer(data);
