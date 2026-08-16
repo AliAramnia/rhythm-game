@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-// Read the analog input used as the pseudo-random seed source.
-uint16_t ADC_ReadSeed(void);
+// Generate a new seed from analog noise on A0 and the current microsecond count.
+uint32_t generateSeed(void);
 
 #endif
