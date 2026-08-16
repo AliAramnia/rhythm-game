@@ -2,6 +2,7 @@
 #include "lcg.h"
 #include "adc.h"
 #include "dac.h"
+#include "spi_manager.h"
 // Rhythm Game - Arduino Mega
 // Main application file.
 
