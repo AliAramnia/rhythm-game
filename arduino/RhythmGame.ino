@@ -4,6 +4,7 @@
 #include "dac.h"
 #include "spi_manager.h"
 #include "timer1.h"
+#include "leds.h"
 // Rhythm Game - Arduino Mega
 // Main application file.
 
