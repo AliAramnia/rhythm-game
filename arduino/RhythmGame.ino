@@ -6,6 +6,7 @@
 #include "timer1.h"
 #include "leds.h"
 #include "joystick.h"
+#include "game_state.h"
 // Rhythm Game - Arduino Mega
 // Main application file.
 
